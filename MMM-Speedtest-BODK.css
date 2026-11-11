@@ -1,0 +1,8 @@
+.speedtest-bodk { --speedtest-download: #65c7ef; --speedtest-upload: #a6df8c; text-align: left; }
+.speedtest-bodk .speedtest-row { display: flex; justify-content: space-between; gap: 16px; margin: 5px 0; }
+.speedtest-bodk .speedtest-row span:last-child { text-align: right; overflow-wrap: anywhere; }
+.speedtest-bodk .speedtest-download { color: var(--speedtest-download); }
+.speedtest-bodk .speedtest-upload { color: var(--speedtest-upload); }
+.speedtest-bodk .speedtest-chart { display: flex; gap: 3px; height: 70px; border-bottom: 1px solid #666; margin: 8px 0; }
+.speedtest-bodk .speedtest-slot { flex: 1; min-width: 0; display: flex; align-items: flex-end; height: 100%; }
+.speedtest-bodk .speedtest-bar { width: 100%; background: currentColor; }

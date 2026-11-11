@@ -1,0 +1,16 @@
+{
+  "name": "mmm-speedtest-bodk",
+  "version": "1.0.0",
+  "description": "Scheduled internet speed measurements for MagicMirror²",
+  "main": "MMM-Speedtest-BODK.js",
+  "author": "BODK",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/BravoOscarDK/MMM-Speedtest-BODK.git" },
+  "bugs": { "url": "https://github.com/BravoOscarDK/MMM-Speedtest-BODK/issues" },
+  "homepage": "https://github.com/BravoOscarDK/MMM-Speedtest-BODK#readme",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check MMM-Speedtest-BODK.js && node --check node_helper.js && node --check lib/speedtest.js && node --check translations.js"
+  }
+}
