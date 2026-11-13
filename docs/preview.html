@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>MMM-Speedtest-BODK preview</title>
+<link rel="stylesheet" href="../MMM-Speedtest-BODK.css">
+<style>
+  body { margin: 40px; background: black; color: #aaa; font: 20px/1.5 "Segoe UI", sans-serif; }
+  .small { font-size: 15px; } .dimmed { color: #666; } .bright { color: white; }
+</style>
+<body>
+<script>
+  // Fictional display data only; no backend or external service is started.
+  let definition;
+  const Module = { register(name, value) { definition = value; } };
+</script>
+<script src="../translations.js"></script>
+<script src="../MMM-Speedtest-BODK.js"></script>
+<script>
+  definition.config = { ...definition.defaults };
+  const timestamp = Date.parse("2026-11-13T12:00:00Z");
+  definition.state = {
+    status: "ready", nextRun: timestamp + 3600000,
+    history: Array.from({ length: 24 }, (_, i) => ({
+      download: 240 + (i * 17 % 70), upload: 70 + (i * 11 % 30), ping: 8.2,
+      timestamp: timestamp - (23 - i) * 3600000,
+      server: { name: "Example server", location: "Example city" }
+    }))
+  };
+  document.body.append(definition.getDom());
+</script>
+</body>
+</html>

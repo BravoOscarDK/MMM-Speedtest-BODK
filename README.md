@@ -2,7 +2,7 @@
 
 ## Description
 
-A MagicMirror² module displaying download and upload speeds in Mbit/s, ping in milliseconds, and the actual test server name and location. Show numbers, bar charts, or both. The two charts retain the latest 24 successful measurements by default, with the oldest on the left. Each chart has its own automatic scale and a visible maximum. Hover over a bar for its time, speed and server.
+A MagicMirror² module displaying download and upload speeds in Mbit/s, ping in milliseconds, and the actual test server name and location. Show numbers, a combined bar chart, or both. The compact chart retains the latest 24 successful measurements by default, with the oldest on the left. Each measurement pairs a blue download bar with a green upload bar on one automatic scale with a visible maximum. Hover over a pair for its time, both speeds and server. Upload bars can appear small when download speeds are much higher.
 
 Measurements run on the device hosting the MagicMirror² server, not on a remote browser. Tests start on configuration/resume and repeat after the configured interval following completion. Multiple instances are serialized to prevent simultaneous bandwidth tests. History is in memory and resets on restart, suspension/resume or reconfiguration. Failed tests preserve previous results and retry at the normal interval.
 
@@ -10,9 +10,9 @@ Not yet validated on a Raspberry Pi.
 
 ### Preview
 
-Default settings after 24 successful measurements, using fictional example data. Blue bars show download speed and green bars show upload speed, with the oldest measurement on the left. Each chart has its own scale. English is the default language.
+The [browser preview](docs/preview.html) shows the compact combined chart after 24 successful measurements using fictional data. Blue bars show download speed and green bars show upload speed on a shared scale, with the oldest measurement on the left. English is the default language. Open the file locally; no backend or speed test is started.
 
-![Default module display with download, upload, ping, test server and bar charts for 24 fictional measurements](docs/images/default-24-measurements.png)
+![Default module display with one combined download and upload chart for 24 fictional measurements](docs/images/default-24-measurements.png)
 
 ## Requirements
 
@@ -60,7 +60,7 @@ Add to the `modules` array in `~/MagicMirror/config/config.js`:
 | `updateInterval` | `3600000` | Delay in milliseconds after each test; integer 60000–2147483647 |
 | `historyLength` | `24` | Number of successful results to retain; integer 1–168 |
 | `showValues` | `true` | Download and upload numbers |
-| `showGraph` | `true` | Separate download and upload history bar charts |
+| `showGraph` | `true` | Combined download and upload history bar chart |
 | `showPing` | `true` | Latest ping |
 | `showServer` | `true` | Actual server name and location |
 | `showLastUpdate` | `true` | Latest successful measurement time |

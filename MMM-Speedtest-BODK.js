@@ -40,19 +40,26 @@ Module.register("MMM-Speedtest-BODK", {
     if (this.config.showServer) add(this.t("server"), [last.server.name, last.server.location].filter(Boolean).join(" · "), "small");
     if (this.config.showGraph) {
       add(this.t("history"), String(history.length), "small dimmed");
-      for (const key of ["download", "upload"]) {
-        const max = Math.max(1, ...history.map(item => item[key]));
-        add(this.t(key), `0–${this.number(max)} Mbit/s`, "small");
-        const chart = document.createElement("div"); chart.className = `speedtest-chart speedtest-${key}`;
-        chart.setAttribute("role", "img"); chart.setAttribute("aria-label", `${this.t(key)}: ${history.map(item => this.number(item[key])).join(", ")} Mbit/s`);
-        for (const item of history) {
-          const slot = document.createElement("div"); slot.className = "speedtest-slot";
+      const keys = ["download", "upload"];
+      const max = Math.max(1, ...history.flatMap(item => keys.map(key => item[key])));
+      const legend = add(this.t("download"), this.t("upload"), "small");
+      legend.children[0].className = "speedtest-download";
+      legend.children[1].className = "speedtest-upload";
+      add("", `0–${this.number(max)} Mbit/s`, "small dimmed");
+      const chart = document.createElement("div"); chart.className = "speedtest-chart";
+      chart.setAttribute("role", "img");
+      chart.setAttribute("aria-label", keys.map(key => `${this.t(key)}: ${history.map(item => this.number(item[key])).join(", ")} Mbit/s`).join("; "));
+      for (const item of history) {
+        const slot = document.createElement("div"); slot.className = "speedtest-slot";
+        slot.title = `${this.date(item.timestamp)} · ${keys.map(key => `${this.t(key)}: ${this.number(item[key])} Mbit/s`).join(" · ")} · ${item.server.name}`;
+        for (const key of keys) {
           const bar = document.createElement("div"); bar.className = "speedtest-bar"; bar.style.height = `${item[key] / max * 100}%`;
-          slot.title = `${this.date(item.timestamp)} · ${this.number(item[key])} Mbit/s · ${item.server.name}`;
-          slot.append(bar); chart.append(slot);
+          bar.className += ` speedtest-${key}`;
+          slot.append(bar);
         }
-        root.append(chart);
+        chart.append(slot);
       }
+      root.append(chart);
       add(this.t("oldest"), this.t("newest"), "small dimmed");
     }
     if (this.config.showLastUpdate) add(this.t("updated"), this.date(last.timestamp), "small dimmed");

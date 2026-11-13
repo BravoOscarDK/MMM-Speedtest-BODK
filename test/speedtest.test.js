@@ -68,9 +68,26 @@ test("renders numbers/charts independently and filters instance notifications", 
   m.socketNotificationReceived("SPEEDTEST_STATE", { id: "b", status: "ready", history: [] }); assert.equal(m.state.status, "waiting");
   m.state = { status: "ready", history: [parseResult(fixture())] };
   const charts = root => root.children.filter(e => e.className?.startsWith("speedtest-chart"));
-  assert.equal(charts(m.getDom()).length, 2);
+  assert.equal(charts(m.getDom()).length, 1);
   m.config.showGraph = false; assert.equal(charts(m.getDom()).length, 0);
   m.config.showGraph = true; m.config.showValues = false;
-  const root = m.getDom(); assert.equal(charts(root).length, 2);
+  const root = m.getDom(); assert.equal(charts(root).length, 1);
   assert.ok(!root.children.some(e => e.className === "speedtest-row bright speedtest-download"));
+});
+
+test("combines download and upload by measurement on a shared scale", () => {
+  const m = frontend();
+  const first = parseResult(fixture());
+  m.state = { status: "ready", history: [first, { ...first, download: 50, upload: 200 }] };
+  const root = m.getDom(), chart = root.children.find(e => e.className === "speedtest-chart");
+  assert.equal(chart.children.length, 2);
+  assert.deepEqual(chart.children.map(slot => slot.children.map(bar => bar.style.height)), [["50%", "10%"], ["25%", "100%"]]);
+  assert.equal(chart.children[0].children[0].className, "speedtest-bar speedtest-download");
+  assert.equal(chart.children[0].children[1].className, "speedtest-bar speedtest-upload");
+  assert.match(chart.attributes["aria-label"], /Download:.*Upload:/);
+  assert.match(chart.children[0].title, /Download:.*Upload:.*Example server/);
+  m.config.language = "da-DK";
+  assert.match(m.getDom().children.find(e => e.className === "speedtest-chart").children[0].title, /100,0 Mbit\/s/);
+  m.state.history = [{ ...first, download: 0, upload: 0 }];
+  assert.ok(m.getDom().children.find(e => e.className === "speedtest-chart").children[0].children.every(bar => bar.style.height === "0%"));
 });
